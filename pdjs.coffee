@@ -1,23 +1,17 @@
 SECONDS_IN_A_DAY = 24*60*60*1000
 
 showNotification = (title, message) ->
-  getNotificationPermission()
-  notification = window.webkitNotifications.createNotification(
-     'http://metrics.pd-internal.com/assets/alex_unhappy.png',
-     title,
-     message
-  )
-  notification.onclick = ->
-    logg("Clicked")
-  notification.show()
-
-getNotificationPermission = () ->
-  w=window.webkitNotifications.checkPermission() #0 is yes apparently
-  if(w==0)
-    logg("Can make desktop notifications")
+  if (window.webkitNotifications.checkPermission() == 0) # 0 is PERMISSION_ALLOWED
+    notification = window.webkitNotifications.createNotification(
+       'http://metrics.pd-internal.com/assets/alex_unhappy.png',
+       title,
+       message
+    )
+    notification.onclick = ->
+      logg("Clicked")
+    notification.show()
   else
-    logg("Can't make desktop notifications, asking")
-    window.webkitNotifications.requestPermission()
+    window.webkitNotifications.requestPermission();
 
 logg = (str) ->
   console.log(str)
@@ -162,7 +156,6 @@ class PDJSobj
     
 
   attach_things: (subdomain, token, refresh=60) =>
-    getNotificationPermission()
     this.subdomain = subdomain
     this.token = token
     this.refresh = refresh
