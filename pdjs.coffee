@@ -1,5 +1,6 @@
 SECONDS_IN_A_DAY = 24*60*60*1000
 
+#This doesn't work yet:
 showNotification = (title, message) ->
   if (window.webkitNotifications.checkPermission() == 0) # 0 is PERMISSION_ALLOWED
     notification = window.webkitNotifications.createNotification(
@@ -11,7 +12,7 @@ showNotification = (title, message) ->
       logg("Clicked")
     notification.show()
   else
-    window.webkitNotifications.requestPermission();
+    window.webkitNotifications.requestPermission()
 
 logg = (str) ->
   console.log(str)
@@ -127,10 +128,6 @@ class PDJSobj
           desc = "Service: \""+json.service.name+"\" was "+status+" as of "+timeUntil(json.service.last_incident_timestamp);
           $("#"+service_id+".pdjs_service").removeClass("pdjs_triggered").removeClass("pdjs_acknowledged").removeClass("pdjs_resolved").removeClass("pdjs_disabled")
           $("#"+service_id+".pdjs_service").attr("title", desc).addClass("pdjs_"+status)
-          if this.services[service_id]
-            try 
-              showNotification("PagerDuty: "+status, "Service "+service_id+" changed from "+this.services[service_id]+" to "+status)
-            catch 
           this.services[service_id] = status
 
     $.ajax(params)    
