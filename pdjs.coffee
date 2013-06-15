@@ -1,6 +1,7 @@
 SECONDS_IN_A_DAY = 24*60*60*1000
 
 showNotification = (title, message) ->
+  getNotificationPermission()
   notification = window.webkitNotifications.createNotification(
      'http://metrics.pd-internal.com/assets/alex_unhappy.png',
      title,
@@ -9,7 +10,6 @@ showNotification = (title, message) ->
   notification.onclick = ->
     logg("Clicked")
   notification.show()
-# showNotification("PagerDuty", 'things broke')
 
 getNotificationPermission = () ->
   w=window.webkitNotifications.checkPermission() #0 is yes apparently
@@ -130,12 +130,15 @@ class PDJSobj
         if(json.service.status=="disabled") 
           status="disabled"
         if(this.services[service_id] != status)
-          if this.services[service_id]
-            showNotification("PagerDuty: "+status, "Service "+service_id+" changed from "+this.services[service_id]+" to "+status)
-          this.services[service_id] = status
           desc = "Service: \""+json.service.name+"\" was "+status+" as of "+timeUntil(json.service.last_incident_timestamp);
           $("#"+service_id+".pdjs_service").removeClass("pdjs_triggered").removeClass("pdjs_acknowledged").removeClass("pdjs_resolved").removeClass("pdjs_disabled")
           $("#"+service_id+".pdjs_service").attr("title", desc).addClass("pdjs_"+status)
+          if this.services[service_id]
+            try 
+              showNotification("PagerDuty: "+status, "Service "+service_id+" changed from "+this.services[service_id]+" to "+status)
+            catch 
+          this.services[service_id] = status
+
     $.ajax(params)    
   update_schedule: (schedule_id) ->
     logg("update_schedule: "+schedule_id)
