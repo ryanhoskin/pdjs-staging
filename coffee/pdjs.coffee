@@ -1,19 +1,5 @@
 SECONDS_IN_A_DAY = 24*60*60*1000
 
-#This doesn't work yet:
-showNotification = (title, message) ->
-  if (window.webkitNotifications.checkPermission() == 0) # 0 is PERMISSION_ALLOWED
-    notification = window.webkitNotifications.createNotification(
-       'http://metrics.pd-internal.com/assets/alex_unhappy.png',
-       title,
-       message
-    )
-    notification.onclick = ->
-      logg("Clicked")
-    notification.show()
-  else
-    window.webkitNotifications.requestPermission()
-
 logg = (str) ->
   console.log(str)
 timeUntil = (time) ->

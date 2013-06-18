@@ -32,11 +32,3 @@ body {
   margin: 8px;
   font-size:200%;
 }
-</style>
-<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-<script>
-pdjs_settings = {
-  subdomain: "pdt-dave",
-  token: "MnCmrfJpwTfTgcVpCgth",
-  refresh: 3
-}
