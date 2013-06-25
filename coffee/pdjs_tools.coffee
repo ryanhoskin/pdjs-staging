@@ -1,4 +1,4 @@
-class PDJStools
+class window.PDJStools
   @SECONDS_IN_A_DAY = 24*60*60*1000
   @logging = true
   @logg: (str) ->

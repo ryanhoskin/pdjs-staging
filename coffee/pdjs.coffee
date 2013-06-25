@@ -1,4 +1,4 @@
-class PDJSobj
+class window.PDJSobj
   @version = 0.2
   @server = 'pagerduty.dev'
   @protocol = "http"
@@ -131,7 +131,7 @@ class PDJSobj
 
 
 jQuery -> 
-  window.PDJS = new PDJSobj
+  window.PDJS = new window.PDJSobj
   PDJS.attach_things(pdjs_settings.subdomain, pdjs_settings.token, pdjs_settings.refresh)
   window.PDJS.update_schedule("PQBSD51")
 
