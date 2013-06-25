@@ -2,6 +2,9 @@ class PDJSobj
   @version = 0.2
   @server = 'pagerduty.dev'
   @protocol = "http"
+  @req_count = 1
+  @req: () ->
+    return PDJSobj.req_count++
   set_token: (token) ->
     this.token=token
   set_subdomain: (subdomain) ->
@@ -55,11 +58,8 @@ class PDJSobj
     window.open("https://"+this.subdomain+".pagerduty.com/services/"+me.id)
   update_service: (service_id) ->
     PDJStools.logg("update_service: "+service_id + " at "+this.subdomain)
-    params =
-      url: "https://"+this.subdomain+".pagerduty.com/api/v1/services/"+service_id,
-      type: "GET",
-      headers: 
-        Authorization: 'Token token='+this.token
+    this.api
+      res: "services/"+service_id,
       success: (json) =>
         status = "resolved"
         if(json.service.incident_counts.acknowledged) 
@@ -74,9 +74,7 @@ class PDJSobj
           $("#"+service_id+".pdjs_service").attr("title", desc).addClass("pdjs_"+status)
           this.services[service_id] = status
 
-    $.ajax(params)    
   update_schedule: (schedule_id) ->
-    PDJStools.logg(@version)
     PDJStools.logg("update_schedule: "+schedule_id)
     this.api
       res: "schedules/"+schedule_id+"/entries"
@@ -90,7 +88,6 @@ class PDJSobj
         end = new Date(on_call.end)
         status = "<a href=\"https://pdt-dave.pagerduty.com/users/"+on_call.user.id+"\" target=\"_blank\">"+on_call.user.name+"</a> is on call for another "+PDJStools.timeUntil(end)
         $("#"+schedule_id+".pdjs_schedule").html(status)
-    # this.api(params)
 
   api: (params) ->
     PDJStools.logg("Call to API: ")
@@ -98,14 +95,20 @@ class PDJSobj
     PDJStools.logg(params)
     params.url = params.url || PDJSobj.protocol+"://"+this.subdomain+"."+PDJSobj.server+"/api/v1/"+params.res
     params.headers = params.headers || []
+    params.contentType = "application/json"
     params.data = params.data || []
     params.data.PDJSversion = PDJSobj.version
+    params.data.request_count = PDJSobj.req()
     params.headers.Authorization = 'Token token='+this.token
-    params.error = (a, b, c) ->
+    params.error = (err) ->
       PDJStools.logg("Error")
-      PDJStools.logg(a)
-      PDJStools.logg(b)
-      PDJStools.logg(c)
+      PDJStools.logg(err.status)
+      PDJStools.logg(err.responseText)
+      # PDJStools.logg(err)
+      # TODO Handle these:
+      # 0 Failed to connect to anything
+      # 401 bad auth
+      # 400 Thing not found
     PDJStools.logg(params)
     $.ajax(params)
 
@@ -114,7 +117,7 @@ class PDJSobj
     this.token = token
     this.refresh = refresh
     this.services = {}
-    # this.update_things()
+    this.update_things()
     # setInterval =>
     #  this.update_things()
     #, refresh*1000
