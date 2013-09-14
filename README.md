@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-pdjs
-====
-=======
 pdjs (base)
 ====
 
@@ -71,5 +67,3 @@ There's an examples directory:
 This is written in [CoffeeScript](http://coffeescript.org/), so you're going to have to compile it to get JavaScript
 
 coffee --output js/ --compile --watch --join pdjsbase.js coffeebase/ &
-
->>>>>>> master
