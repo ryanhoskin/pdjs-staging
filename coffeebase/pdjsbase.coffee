@@ -1,5 +1,5 @@
 class window.PDJSobj
-  @version = "0.3.1"
+  @version = "PDJS-0.3.1"
   
   logg: (str) ->
     if(this.logging)
@@ -26,9 +26,14 @@ class window.PDJSobj
 
   # If you don't override the callback on error we do the basic error handling
   error_function: (err, callerparams) ->
-    this.logg("Error for "+callerparams.res)
-    this.logg(err.status)
-    this.logg(err.responseText)
+    console.log("Error for "+callerparams.res)
+    console.log(err.status)
+    error_detail = err.responseText
+    try
+      error_detail = JSON.parse(error_detail)
+    catch anyerror
+      this.logg("Not an JSON error")
+    console.log(error_detail)
     # PDJStools.logg(err)
     # TODO Handle these:
     # 0 Failed to connect to anything
@@ -41,13 +46,17 @@ class window.PDJSobj
     params.url = params.url || @protocol+"://"+@subdomain+"."+this.server+"/api/"+@api_version+"/"+params.res
     params.attempt = params.attempt || 0
     params.headers = params.headers || {}
-    params.contentType = "application/json"
+    params.contentType = "application/json; charset=utf-8"
+    params.dataType = "json"
     params.data = params.data || {}
     params.data.PDJSversion = PDJSobj.version
     params.data.request_count = this.req()
     params.data.attempt = params.attempt++
     this.logg("params.data:")
     this.logg(params.data)
+    params.type = (params.type||"GET").toUpperCase()
+    if(params.type=="POST" || params.type=="POST") # the update APIs expect the data in the body to be JSON
+      params.data = JSON.stringify(params.data)
     params.headers.Authorization = 'Token token='+this.token
     params.error = params.error || (err) =>
       this.error_function(err, params)
@@ -88,3 +97,35 @@ class window.PDJSobj
     this.logg(params)
     this.api(params)  
   
+  # the event API is different enough to have its own function
+  event: (params = {}) ->
+    this.logg("Create an event")
+    params.type = "POST"
+    params.url = params.url || @protocol+"://events."+this.server+"/generic/2010-04-15/create_event.json"
+
+    params.data = params.data || {}
+    params.data.service_key = params.data.service_key || params.service_key || this.logg("No service key")
+    params.data.event_type = params.data.event_type || params.event_type || "trigger"
+    params.data.description = params.data.description || params.description || "No description provided"
+    params.data.details = params.data.details || params.details || {}
+    params.data = JSON.stringify(params.data)
+    
+    params.contentType =  "application/json; charset=utf-8"
+    params.dataType = "json"
+    params.error = params.error || (err) =>
+      this.error_function(err, params)
+    params.success = params.success || (data) => 
+      this.no_success_function(data, params)
+    $.ajax(params)
+
+  # Shortcut methods
+  trigger: (params = {}) ->
+    params.event_type = "trigger"
+    this.event(params)
+  # Todo: add some examples to the docs
+  acknowledge: (params = {}) ->
+    params.event_type = "acknowledge"
+    this.event(params)
+  resolve: (params = {}) ->
+    params.event_type = "resolve"
+    this.event(params)
