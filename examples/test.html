@@ -1,0 +1,60 @@
+
+<html>
+<head>
+
+<link href="pdjs.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="lib/jquery-1.7.1.min.js"> </script>
+<script src="lib/moment.min.js"> </script>
+<script src="config.js"> </script>
+<script type="text/javascript" src="../js/pdjs.js"> </script>
+<script>
+PDJS = new PDJSobj({
+  subdomain: "webdemo",
+  token: "UUbYgtFwaL6BCp8L3W5s",
+})
+
+add_contact_method = function(user_id) {
+  PDJS.api({
+    res: "users/"+user_id+"/contact_methods",
+    type: "POST",
+    data: {
+      contact_method: {
+        type:"email",
+        address:"test4@example.com",
+        label: "Added from PDJS",
+        }
+    },
+    success: function (json) {
+      console.log("New contact method ID: " + json.contact_method.id)
+      add_notification_rule(user_id, json.contact_method.id, 900)
+    }
+  })
+}
+add_notification_rule = function(user_id, contact_method, start_delay_in_minutes) {
+  PDJS.api({
+    res: "users/"+user_id+"/notification_rules",
+    type: "POST",
+    data: {
+      notification_rule: {
+        contact_method_id: contact_method,
+        start_delay_in_minutes: start_delay_in_minutes,
+        }
+    },
+    success: function (json) {
+      console.log(json)
+      console.log("New notification rule ID: " + json.notification_rule.id)
+    }
+  })
+}
+
+add_contact_method("PRJRF7T")
+
+
+</script>
+
+
+PRJRF7T
+
+{"contact_method":{"type":"phone","address":"5551112222","label":"Island Lair","country_code":"1"}}
+
+UUbYgtFwaL6BCp8L3W5s
