@@ -3,134 +3,14 @@
 
   <head>
     <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Pdjs : JavaScript wrapper for the PagerDuty API" />
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
     <title>Pdjs</title>
   </head>
 
   <body>
-
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/eurica/pdjs">View on GitHub</a>
-
-          <h1 id="project_title">Pdjs</h1>
-          <h2 id="project_tagline">JavaScript wrapper for the PagerDuty API</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/eurica/pdjs/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/eurica/pdjs/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="pdjs-base" class="anchor" href="#pdjs-base"><span class="octicon octicon-link"></span></a>pdjs (base)</h1>
-
-<p>This is a simple JavaScript wrapper to the <a href="http://developer.pagerduty.com/">PagerDuty API</a></p>
-
-<pre><code>PDJS = new PDJSobj({
-  subdomain: "webdemo",
-  token: "CkNpsqH9i6yTGus8VDzA",
-})
-
-PDJS.api({
-  res: "services",
-  data: {
-    limit: 20,
-  },
-  success: function (json) {
-    console.log(JSON.stringify(json))
-  },
-})
-</code></pre>
-
-<h2>
-<a name="making-an-api-request" class="anchor" href="#making-an-api-request"><span class="octicon octicon-link"></span></a>Making an API request</h2>
-
-<ol>
-<li>Create a PDJSobj, with a subdomain and a token/api key</li>
-<li>Call an api request:
-
-<ul>
-<li>the <strong>res</strong> parameter is the URL path of the resource you want</li>
-<li>the <strong>data</strong> parameter is optional</li>
-</ul>
-</li>
-<li>Everything is asynchronous so you'll need:
-
-<ul>
-<li>a <em>function</em> to use on <strong>success</strong>
-</li>
-<li>also optional is an <strong>error</strong> function</li>
-</ul>
-</li>
-</ol><h2>
-<a name="the-api_all-helper" class="anchor" href="#the-api_all-helper"><span class="octicon octicon-link"></span></a>The <em>api_all</em> helper</h2>
-
-<p>There's also a helper method that will handle limits and offsets for lists longer than 100 elements:</p>
-
-<pre><code>PDJS.api_all({
-  res: "incidents",
-  data: {
-    since: "2013-07-14T09:53:17-07:00",
-    until: "2013-08-14T09:53:17-07:00",
-    status: "resolved",
-    fields: "incident_number,status,created_on,service,last_status_change_by,last_status_change_on"
-  },
-  final_success: function(data) {
-    console.log(data.total + " objects!");
-    console.log(data);
-  },
-  incremental_success: function(data) {
-    console.log("Got data");
-  }
-})
-</code></pre>
-
-<p>It works the same, except you'll need to specify one or more of:</p>
-
-<ul>
-<li>a <em>function</em> to run on <strong>final_success</strong> at the end</li>
-<li>a <em>function</em> to run on each <strong>incremental_success</strong>
-</li>
-</ul><p>That's kind of nifty.</p>
-
-<h2>
-<a name="examples" class="anchor" href="#examples"><span class="octicon octicon-link"></span></a>Examples</h2>
-
-<p>There's an examples directory:</p>
-
-<ul>
-<li>
-<strong>examples/incidents.html</strong> polls the <a href="http://developer.pagerduty.com/documentation/rest/incidents/list">incidents</a> api and displays the triggered &amp; acknowledged incidents</li>
-<li>
-<strong>examples/report.html</strong> shows off <em>api_all</em> by looping through all the events on my webdemo account for the last 30 days and prints them out as a CSV-esque thing that you could paste into a CSV file.</li>
-</ul><h2>
-<a name="to-compile-the-base-script" class="anchor" href="#to-compile-the-base-script"><span class="octicon octicon-link"></span></a>To compile the base script:</h2>
-
-<p>This is written in <a href="http://coffeescript.org/">CoffeeScript</a>, so you're going to have to compile it to get JavaScript</p>
-
-<p>coffee --output js/ --compile --watch --join pdjsbase.js coffeebase/ &amp;</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Pdjs maintained by <a href="https://github.com/eurica">eurica</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
+<script>
+window.location = "https://github.com/eurica/pdjs"
+</script>
+<a href="https://github.com/eurica/pdjs">https://github.com/eurica/pdjs</a>
   </body>
 </html>
