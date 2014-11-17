@@ -1,0 +1,43 @@
+<html>
+<head>
+
+<link href="pdjs.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="lib/jquery-1.7.1.min.js"> </script>
+<script src="lib/moment.min.js"> </script>
+<script type="text/javascript" src="../js/pdjs.js"> </script>
+<script>
+
+var pdjs_settings = {
+  subdomain: "webdemo",
+   token: "CkNpsqH9i6yTGus8VDzA",
+  refresh: 15,
+}
+
+
+$(function(){
+  PDJS = new PDJSobj(pdjs_settings)
+  window.PDJS = PDJS
+  console.log(PDJS)
+  PDJS.api_all({
+    res: "users",
+    data: {
+    },
+    incremental_success: function(data) {
+        $("#status").append(" Loading more.");
+    },
+    final_success: function(data) {
+      $("#status").append(" Processing");
+      console.log(data.total + " objects!")
+      console.log(data)
+    }
+  })
+})
+</script>
+
+</head>
+
+<body>
+
+
+</body>
+</html>

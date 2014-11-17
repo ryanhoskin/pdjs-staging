@@ -1,0 +1,51 @@
+<html>
+<head>
+
+<script src="lib/jquery-1.7.1.min.js"> </script>
+<script type="text/javascript" src="../js/pdjs.js"> </script>
+<script>
+
+// Configuration
+var pdjs_settings = {
+  subdomain: "fticonsulting",
+  token: "m9pKhfkSCsjF8sYxkSvM",
+}
+
+// My barebones UI :)
+printf = function(s) {
+  $("body").append(s)
+}
+
+// Make 2 asynchronous calls with jQuery
+$(function(){
+  PDJS = new PDJSobj(pdjs_settings)
+  window.PDJS = PDJS
+
+  PDJS.api({
+    res: "escalation_policies/on_call",
+    success: function (data) {
+      for(i in data.escalation_policies) {
+        ep = data.escalation_policies[i]
+        printf(ep.name + "<br>")
+        ep.users = {}
+        for(j in ep.on_call) {
+          u = ep.on_call[j]
+          if(u.level>1) break; //only display the primaries
+          printf(" - <a href='mailto:"+u.user.email+"'>"+u.user.name+"</a><br>")
+        }
+      }
+    }
+    
+  })
+
+
+})
+
+
+</script>
+
+</head>
+
+<body>
+</body>
+</html>

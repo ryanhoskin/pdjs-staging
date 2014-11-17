@@ -1,0 +1,65 @@
+<html>
+<head>
+
+<script src="lib/jquery-1.7.1.min.js"> </script>
+<script type="text/javascript" src="../js/pdjs.js"> </script>
+<script>
+
+// Configuration
+var pdjs_settings = {
+  subdomain: "webdemo",
+  token: "CkNpsqH9i6yTGus8VDzA",
+}
+
+var schedules = false
+var users = false
+printf = console.log
+
+// Make 2 asynchronous calls with jQuery
+$(function(){
+  PDJS = new PDJSobj(pdjs_settings)
+  window.PDJS = PDJS
+
+  // Get all calendars
+  PDJS.api_all({
+    res: "users/on_call",
+    final_success: function(data) {
+        printf(data)
+        schedules = data
+        if(schedules & users) show_results()
+    }
+  })
+
+  // Get all users
+  PDJS.api_all({
+    res: "users",
+    final_success: function(data) {
+        //re-index
+        users = {}
+        $.each(data.users, function (index, value) {
+          users[value.id] = value
+        })
+        printf(data)
+        if(schedules & users) show_results()
+    }
+  })
+
+})
+
+show_results = function() {
+  printf(users)
+  printf(schedules)
+  $.each(schedules, function (index, value) {
+
+  })  
+}
+
+</script>
+
+</head>
+
+<body>
+
+
+</body>
+</html>
