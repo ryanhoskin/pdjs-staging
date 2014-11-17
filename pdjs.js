@@ -14,14 +14,10 @@
     };
 
     function PDJSobj(params) {
-      var _ref;
       if (params == null) {
         params = {};
       }
       this.subdomain = params.subdomain;
-      this.async = (_ref = params.async === false) != null ? _ref : {
-        "false": true
-      };
       this.token = params.token;
       this.refresh = params.refresh || 60;
       this.refresh_in_ms = this.refresh * 1000;
@@ -59,7 +55,6 @@
       this.logg("Call to API: " + params.res);
       params.url = params.url || this.protocol + "://" + this.subdomain + "." + this.server + "/api/" + this.api_version + "/" + params.res;
       params.attempt = params.attempt || 0;
-      params.async = params.async || this.async;
       params.headers = params.headers || {};
       params.contentType = "application/json; charset=utf-8";
       params.dataType = "json";
@@ -70,7 +65,7 @@
       this.logg("params.data:");
       this.logg(params.data);
       params.type = (params.type || "GET").toUpperCase();
-      if (params.type === "POST" || params.type === "PUT") {
+      if (params.type === "POST" || params.type === "POST") {
         params.data = JSON.stringify(params.data);
       }
       params.headers.Authorization = 'Token token=' + this.token;
@@ -145,7 +140,6 @@
       params.data = params.data || {};
       params.data.service_key = params.data.service_key || params.service_key || this.logg("No service key");
       params.data.event_type = params.data.event_type || params.event_type || "trigger";
-      params.data.incident_key = params.data.incident_key || params.incident_key || "Please specify an incident_key";
       if (params.client) {
         params.data.client = params.data.client || params.client;
       }
