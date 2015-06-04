@@ -1,5 +1,5 @@
 class window.PDJSobj
-  @version = "PDJS-0.4.9"
+  @version = "PDJS-0.5.0"
   logg: (str) ->
     if(this.logging)
       console.log(str)  
@@ -64,7 +64,7 @@ class window.PDJSobj
     params.success = params.success || (data) => 
       this.no_success_function(data, params)
     this.logg(params)
-    jQuery.ajax(params)
+    $.ajax(params)
 
   # For list queries, this will recursively keep getting the next offset
   api_all: (params = {}, datasofar=[]) ->
@@ -120,7 +120,7 @@ class window.PDJSobj
       this.error_function(err, params)
     params.success = params.success || (data) => 
       this.no_success_function(data, params)
-    jQuery.ajax(params)
+    $.ajax(params)
 
   # Shortcut methods
   trigger: (params = {}) ->
@@ -133,3 +133,4 @@ class window.PDJSobj
   resolve: (params = {}) ->
     params.event_type = "resolve"
     this.event(params)
+
