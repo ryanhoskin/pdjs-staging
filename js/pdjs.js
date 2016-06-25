@@ -26,7 +26,7 @@
       this.refresh = params.refresh || 60;
       this.refresh_in_ms = this.refresh * 1000;
       this.protocol = params.protocol || "https";
-      this.server = params.server || "pagerduty.com";
+      this.server = params.server || "pd-staging.com";
       this.logging = params.logging || false;
       this.req_count = 1;
       this.api_version = "v1";
